@@ -1,0 +1,2 @@
+rootProject.name='HolaMundoAndroid'
+include ':app'
