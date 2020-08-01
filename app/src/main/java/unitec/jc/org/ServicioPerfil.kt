@@ -1,13 +1,10 @@
 package unitec.jc.org
 
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.http.*
 
 
-//Esta interface es el extremo del front-end para cominicarte con el backend
-//Tu extremo de comunicacion en el back-end es el ControladorPerfil,
-//De tal manera que POR CADA SERVICIO EN EL CONTROLADOR, DEBE HABER UN SERVICIO
-//ESPEJO AQUI. Es decir tus 5 operaciones basicas CRUD de la entidad Perfil
 interface ServicioPerfil {
 
     //Empezamos con el post que es el de guardar
@@ -16,7 +13,7 @@ interface ServicioPerfil {
 
     //Sigue buscar Todos
     @GET("api/perfil")
-    fun buscarTodos():Call<List<Perfil>>
+    fun buscarTodos(): Single<List<Perfil>>
 
     //Sigue el de buscar por ID
     @GET("api/perfil/{id}")

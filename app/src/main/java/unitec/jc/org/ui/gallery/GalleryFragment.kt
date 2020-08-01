@@ -51,6 +51,15 @@ class GalleryFragment : Fragment() {
         //cada que el usuario le de click ale menu donde esta el fragmento de la gallery
         //este paso es elequivalente de cuando se meten a la app de facebook y se refresca
         // y cambia lo datos en automatico
+        //Activamos el swipe
+         swipe.setOnRefreshListener {
+             perfiles.visibility=View.GONE
+             error.visibility=View.GONE
+             cargando.visibility=View.VISIBLE
+             viewModel.refrescar()
+             swipe.isRefreshing=false
+         }
+
         observarViewModel()
 
     }

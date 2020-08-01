@@ -3,6 +3,11 @@ package unitec.jc.org.ui.gallery
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import io.reactivex.rxjava3.schedulers.Schedulers
+import unitec.jc.org.ApiServicioPerfil
 import unitec.jc.org.Perfil
 
 
@@ -15,6 +20,11 @@ class GalleryViewModel : ViewModel() {
     val lista_perfiles=MutableLiveData<List<Perfil>>()
     val errorInternet=MutableLiveData<Boolean>()
     val cargando=MutableLiveData<Boolean>()
+    //Ese atributo es para el manejo de memoria en arquietctura reactiva
+    private val dispose=CompositeDisposable()
+
+    //Declaramos el atributo del apiServicioPerfil que ya es reactivo
+    private val apiServicioPerfil=ApiServicioPerfil()
 
     private fun obtenerPerfile(){
         //Aqui vamos a llamar nuestro srvicio rest, por el momento vamos a
@@ -22,23 +32,34 @@ class GalleryViewModel : ViewModel() {
     }
 
     fun refrescar(){
-        //Cada que se requierea obtener informacion ya cambiada se va a invocar
-        // este metodo refrescar. y vamos a hacer un enlace al back end con retrofit
-        //Por simplicidad vamos a hacer una lista fake de perfiles.
-        val p1= Perfil()
-        p1.nombre="Vaneso"
-        val p2=Perfil()
-        p2.nombre="Eriko"
-        val p3=Perfil()
-        p3.nombre="Rodriga"
-        val p4=Perfil()
-        p4.nombre="Armanda"
-        val lista= arrayListOf<Perfil>(p1,p2,p3,p4)
-        //Imagina que estos los sacaste de retrofit
-       //Asignamos MutableLiveData a estos
-        lista_perfiles.value=lista
+       //Inicialmente queremos que el error de internet sea falso
         errorInternet.value=false
-        cargando.value=false
+        obtenerListadoRemotamente()
+    }
+
+    //Este nuevo metodo es el de la conexion asincronica ractiva
+    fun obtenerListadoRemotamente(){
+        cargando.value=true
+
+        //Aqui viene el thread asincronico REACTIVO HUUUYYY QUE MIEDOOOOO TODO MUUUUY NUEVO
+        dispose.add(
+            apiServicioPerfil.getPerfiles()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object: DisposableSingleObserver<List<Perfil>>(){
+                    override fun onSuccess(listaPer: List<Perfil>?) {
+                       lista_perfiles.value=listaPer
+                        cargando.value=false
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        errorInternet.value=true
+                        cargando.value=false
+                    }
+
+                })
+        )
+
 
     }
 }

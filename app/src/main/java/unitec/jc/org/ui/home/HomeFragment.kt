@@ -48,6 +48,8 @@ class HomeFragment : Fragment() {
             //Lo siguiente es lo mas interesante!!  Presentar las vistas al modelo
             //Es lo que les deje de investigación.
             //Creamos un objeto de la tarea asincronica e inicializamos sus arggumentos
+            //Esta tarea guardar usa el modelo tradicional MVP o MVC
+
             TareaGuardarPerfil(txtN,txtP,txtE,root.context).execute()
 
         }
