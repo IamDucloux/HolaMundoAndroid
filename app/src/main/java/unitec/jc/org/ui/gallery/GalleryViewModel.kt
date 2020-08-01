@@ -35,6 +35,7 @@ class GalleryViewModel : ViewModel() {
        //Inicialmente queremos que el error de internet sea falso
         errorInternet.value=false
         obtenerListadoRemotamente()
+
     }
 
     //Este nuevo metodo es el de la conexion asincronica ractiva
@@ -61,5 +62,10 @@ class GalleryViewModel : ViewModel() {
         )
 
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        dispose.clear()
     }
 }

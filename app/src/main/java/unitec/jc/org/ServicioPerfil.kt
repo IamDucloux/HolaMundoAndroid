@@ -15,6 +15,8 @@ interface ServicioPerfil {
     @GET("api/perfil")
     fun buscarTodos(): Single<List<Perfil>>
 
+
+
     //Sigue el de buscar por ID
     @GET("api/perfil/{id}")
     fun buscarTodos(@Path("id") id:String?):Call<Perfil>

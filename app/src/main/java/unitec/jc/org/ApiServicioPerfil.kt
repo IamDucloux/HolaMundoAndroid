@@ -2,7 +2,8 @@ package unitec.jc.org
 
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 class ApiServicioPerfil {
@@ -13,7 +14,7 @@ class ApiServicioPerfil {
     private val api=Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(JacksonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
         .create(ServicioPerfil::class.java)
 
