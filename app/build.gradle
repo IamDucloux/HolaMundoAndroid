@@ -24,6 +24,7 @@ android {
     }
     //Aqui agregamos las opciones de empaquetamiento y quitamos los duplicados
     //de las licencias de APACHE SOFTWARE lICENSES (ASL)
+    //
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'
