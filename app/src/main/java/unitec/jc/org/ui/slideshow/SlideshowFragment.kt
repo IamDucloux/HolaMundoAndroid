@@ -142,7 +142,7 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
         //Todo lo que pusiste en el onCreate del mapa aqui lo pegaras
         //Antes de invocar el token se de hacer en esta seccion antes del activit_main
         //sino lo haces te marcara error al ejecutar la app.
-        Mapbox.getInstance(requireContext(),"pk.eyJ1IjoiZGF0b24yIiwiYSI6ImNrZGdtN2V4czFxb3oycXA5eHBrcWZrd3cifQ.4XHbte4bh6khF8M_E94qQA")
+        Mapbox.getInstance(requireContext(),"pk.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 
         //Ahora si inicializamos el mapView para que contenga neustro mapa
