@@ -2,6 +2,7 @@ package unitec.jc.org.ui.slideshow
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -133,6 +134,12 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //RECUERDEN QUE LES DIJE QUE TOKEN IBA AAAAAANTES DE Cualquier invocacion de vistas
+        //Antes de invocar el token se de hacer en esta seccion antes del activit_main
+        //sino lo haces te marcara error al ejecutar la app.
+        Mapbox.getInstance(requireContext(),"pifQ.4XHbte4bh6khF8M_E94qQA")
+
+
         val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
         return root
     }
@@ -140,9 +147,6 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Todo lo que pusiste en el onCreate del mapa aqui lo pegaras
-        //Antes de invocar el token se de hacer en esta seccion antes del activit_main
-        //sino lo haces te marcara error al ejecutar la app.
-        Mapbox.getInstance(requireContext(),"pk.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 
         //Ahora si inicializamos el mapView para que contenga neustro mapa
@@ -247,7 +251,10 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
             LocationEngineRequest.Builder(INTERVALO_DE_DEFECTO)
                 .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
                 .setMaxWaitTime(MAXIMO_INTERVALO_ESPERA).build()
-     //   locationEngine!!.requestLocationUpdates(request, callback, mainLooper)
+        //COMO EL LocationEngine debe estar actualizandose  el método requestLocationUpdate recibe como argumento
+        //Obviamente el request, junto con su intervalo y debemos de ponerlo en un Thread separado
+        //para ello sirve el metodo Looper.myLooper() que se requiere como argumento de dicho metodo
+        locationEngine!!.requestLocationUpdates(request, callback, Looper.myLooper())
         locationEngine!!.getLastLocation(callback)
     }
     /***************************************************************************************************
