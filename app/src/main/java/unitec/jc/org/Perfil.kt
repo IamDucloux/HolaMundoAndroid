@@ -11,6 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
     var email:String?=null
     var celular:String?=null
     var edad:Int?=null
-   var loca:Localizacion?=null
+   var localizaciones:List<Localizacion>?=null
 
 }

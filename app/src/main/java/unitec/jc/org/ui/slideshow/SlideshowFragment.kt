@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_slideshow.*
 import unitec.jc.org.Localizacion
 import unitec.jc.org.Perfil
+import unitec.jc.org.TareaSeguirPerfil
 import java.lang.Exception
 import java.lang.ref.WeakReference
 
@@ -137,8 +138,8 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
         //RECUERDEN QUE LES DIJE QUE TOKEN IBA AAAAAANTES DE Cualquier invocacion de vistas
         //Antes de invocar el token se de hacer en esta seccion antes del activit_main
         //sino lo haces te marcara error al ejecutar la app.
-        Mapbox.getInstance(requireContext(),"pifQ.4XHbte4bh6khF8M_E94qQA")
-
+        //Todo lo que pusiste en el onCreate del mapa aqui lo pegaras
+        Mapbox.getInstance(requireContext(),"pk.eQ.4XHbte4bh6k")
 
         val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
         return root
@@ -146,7 +147,7 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Todo lo que pusiste en el onCreate del mapa aqui lo pegaras
+
 
 
         //Ahora si inicializamos el mapView para que contenga neustro mapa
@@ -221,15 +222,24 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
                 var localizacion=Localizacion()
                 localizacion.latitud=loca?.latitude
                 localizacion.longitud=loca?.longitude
-                 //generamos el perfil
+                 //generamos el perfil FAKE
                 var perfil= Perfil()
                 perfil.nombre="Pancholin"
                 perfil.edad=5
                 perfil.email="pancho@gmail.com"
                 //Le aventamos la localizacion que ya viene dada del GPS
-                perfil.loca=localizacion
+                //generamos el arrayList con mis localizaciones
+
+                var localizaciones= arrayListOf<Localizacion>(localizacion)
+
+                perfil.localizaciones=localizaciones
                 //Tarea, aqui invocar la tarea asincronica qu debe de guarda, guiate en la que ya teniamos y que guardada
                 //En fragment home
+
+                //Esto es muy facil: Aqui invocamos a la nueva Tarea Asicrnoica
+                TareaSeguirPerfil(perfil).execute()
+
+
 
 
                 iniciarMaquinaDeSeguimiento();
@@ -256,6 +266,10 @@ class SlideshowFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
         //para ello sirve el metodo Looper.myLooper() que se requiere como argumento de dicho metodo
         locationEngine!!.requestLocationUpdates(request, callback, Looper.myLooper())
         locationEngine!!.getLastLocation(callback)
+        //Si quires ue cada segundo, se te guarde cada uno de las localizaciones, tendras
+        //que poner aqui  tu TareaSeguirPerfil
+        // TareaSeguirPerfil(perfil)
+
     }
     /***************************************************************************************************
     Termina primer bloque de código
